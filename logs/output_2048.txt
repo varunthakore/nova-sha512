@@ -1,0 +1,42 @@
+Nova-based SHA512 compression function iterations
+=========================================================
+Producing public parameters...
+PublicParams::setup, took 5.65060872s 
+Number of constraints per step (primary circuit): 78415
+Number of constraints per step (secondary circuit): 10347
+Number of variables per step (primary circuit): 78331
+Number of variables per step (secondary circuit): 10329
+Generating a RecursiveSNARK...
+RecursiveSNARK::prove_step 0: true, took 84.01031ms 
+RecursiveSNARK::prove_step 1: true, took 137.031124ms 
+RecursiveSNARK::prove_step 2: true, took 160.755787ms 
+RecursiveSNARK::prove_step 3: true, took 164.975492ms 
+RecursiveSNARK::prove_step 4: true, took 171.796554ms 
+RecursiveSNARK::prove_step 5: true, took 174.896925ms 
+RecursiveSNARK::prove_step 6: true, took 180.363054ms 
+RecursiveSNARK::prove_step 7: true, took 173.828721ms 
+RecursiveSNARK::prove_step 8: true, took 187.749193ms 
+RecursiveSNARK::prove_step 9: true, took 182.455552ms 
+RecursiveSNARK::prove_step 10: true, took 210.35821ms 
+RecursiveSNARK::prove_step 11: true, took 192.386381ms 
+RecursiveSNARK::prove_step 12: true, took 185.54792ms 
+RecursiveSNARK::prove_step 13: true, took 185.632292ms 
+RecursiveSNARK::prove_step 14: true, took 189.76049ms 
+RecursiveSNARK::prove_step 15: true, took 185.750486ms 
+RecursiveSNARK::prove_step 16: true, took 190.13243ms 
+Total time taken by RecursiveSNARK::prove_steps: 2.95789328s
+Verifying a RecursiveSNARK...
+RecursiveSNARK::verify: true, took 177.536358ms
+Generating a CompressedSNARK using Spartan with IPA-PC...
+CompressedSNARK::prove: true, took 6.567937543s
+Total proving time is 11.310179391s
+CompressedSNARK::len 10399 bytes
+Verifying a CompressedSNARK...
+CompressedSNARK::verify: true, took 240.015387ms
+=========================================================
+Public parameters generation time: 5.65060872s 
+Total proving time (excl pp generation): 11.310179391s
+Total verification time: 240.015387ms
+=========================================================
+Expected value of final hash = "8785f615b30c07eb4c5f5d72c9b3663521081581ec670631b28be491f5f7ad6c6757b9a2025c68471fa3c9db65305804f6ec6dfd15159b02e91c58ad570e92fb"
+Actual value of final hash   = "8785f615b30c07eb4c5f5d72c9b3663521081581ec670631b28be491f5f7ad6c6757b9a2025c68471fa3c9db65305804f6ec6dfd15159b02e91c58ad570e92fb"

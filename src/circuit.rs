@@ -56,7 +56,7 @@ where
     F: PrimeField + PrimeFieldBits,
 {
     fn arity(&self) -> usize {
-        2
+        3
     }
 
     fn synthesize<CS: ConstraintSystem<F>>(

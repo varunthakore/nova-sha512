@@ -1,0 +1,30 @@
+Nova-based SHA512 compression function iterations
+=========================================================
+Producing public parameters...
+PublicParams::setup, took 5.663318608s 
+Number of constraints per step (primary circuit): 78415
+Number of constraints per step (secondary circuit): 10347
+Number of variables per step (primary circuit): 78331
+Number of variables per step (secondary circuit): 10329
+Generating a RecursiveSNARK...
+RecursiveSNARK::prove_step 0: true, took 81.399131ms 
+RecursiveSNARK::prove_step 1: true, took 142.652833ms 
+RecursiveSNARK::prove_step 2: true, took 159.512572ms 
+RecursiveSNARK::prove_step 3: true, took 163.667782ms 
+RecursiveSNARK::prove_step 4: true, took 173.875824ms 
+Total time taken by RecursiveSNARK::prove_steps: 721.227692ms
+Verifying a RecursiveSNARK...
+RecursiveSNARK::verify: true, took 165.081742ms
+Generating a CompressedSNARK using Spartan with IPA-PC...
+CompressedSNARK::prove: true, took 6.46133425s
+Total proving time is 8.969354571s
+CompressedSNARK::len 10400 bytes
+Verifying a CompressedSNARK...
+CompressedSNARK::verify: true, took 228.219729ms
+=========================================================
+Public parameters generation time: 5.663318608s 
+Total proving time (excl pp generation): 8.969354571s
+Total verification time: 228.219729ms
+=========================================================
+Expected value of final hash = "df40d4a774e0b453a5b87c00d6f0ef5d753143454e88ee5f7b607134598294c7905ccbcf94bbc46e474db6eb44e56a6dbb6d9a1be9d4fb5d1b5f2d0c6ed34bfe"
+Actual value of final hash   = "df40d4a774e0b453a5b87c00d6f0ef5d753143454e88ee5f7b607134598294c7905ccbcf94bbc46e474db6eb44e56a6dbb6d9a1be9d4fb5d1b5f2d0c6ed34bfe"
