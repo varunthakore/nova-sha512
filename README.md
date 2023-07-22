@@ -148,5 +148,7 @@ logs/output_128.txt:Public parameters generation time: 5.878975833s
 logs/output_64.txt:Public parameters generation time: 5.576295279s 
 ```
 
+This project was part of the submission for [ZK MOOC Hackathon](https://zk-hacking.org/) for [zk-Circuits Track](https://zk-hacking.org/tracks/zk_circuit_track/) and it was selected as one of the winners for *Category 2: Circuits/R1CSs for recursive SNARKs*.
+
 ## Acknowledgement
 This project is adapted from [Prof Saravanan Vijayakumaran's](https://www.ee.iitb.ac.in/~sarva/) benchmarking of [Nova-based SHA256](https://github.com/avras/nova-sha256).
