@@ -21,8 +21,7 @@ pub const DIGEST_LENGTH: usize = 512;
 pub fn sha512_state_to_bytes(state: [u64; 8]) -> Vec<u8> {
     state
         .into_iter()
-        .map(|x| x.to_be_bytes())
-        .flatten()
+        .flat_map(|x| x.to_be_bytes())
         .collect()
 }
 
