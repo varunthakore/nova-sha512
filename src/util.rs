@@ -1,7 +1,6 @@
-use bellperson::gadgets::multipack::{bytes_to_bits, compute_multipacking};
+use bellpepper::gadgets::multipack::{bytes_to_bits, compute_multipacking};
 use generic_array::{typenum::U128, GenericArray};
-use pasta_curves::group::ff::{PrimeField, PrimeFieldBits};
-use sha2::compress512;
+use ff::{PrimeField, PrimeFieldBits};
 
 pub const IV: [u64; 8] = [
     0x6a09e667f3bcc908,
@@ -15,7 +14,9 @@ pub const IV: [u64; 8] = [
 ];
 
 pub const BLOCK_LENGTH_BYTES: usize = 128;
+pub const BLOCK_LENGTH: usize = 1024;
 pub const DIGEST_LENGTH_BYTES: usize = 64;
+pub const DIGEST_LENGTH: usize = 512;
 
 pub fn sha512_state_to_bytes(state: [u64; 8]) -> Vec<u8> {
     state
@@ -25,15 +26,27 @@ pub fn sha512_state_to_bytes(state: [u64; 8]) -> Vec<u8> {
         .collect()
 }
 
+
 fn padded_input_to_blocks(input: Vec<u8>) -> Vec<GenericArray<u8, U128>> {
     assert!(input.len() % BLOCK_LENGTH_BYTES == 0);
+    let mut input_clone = input.clone();
+    let mut blocks: Vec<Vec<u8>> = vec![];
 
-    let blocks = input.chunks(BLOCK_LENGTH_BYTES);
+    let num_blocks = input.len() / BLOCK_LENGTH_BYTES;
 
-    let blocks_vec: Vec<GenericArray<u8, U128>> = blocks
+    for i in (0..num_blocks).rev() {
+        let block: Vec<u8> = input_clone.drain(i * BLOCK_LENGTH_BYTES..).collect();
+        blocks.push(block);
+    }
+
+    // Reverse the order of the blocks as they were pushed in reverse order
+    blocks.reverse();
+
+    let blocks_ga_vec: Vec<GenericArray<u8, U128>> = blocks
+        .iter()
         .map(|a| GenericArray::<u8, U128>::clone_from_slice(a))
         .collect();
-    blocks_vec
+    blocks_ga_vec
 }
 
 fn add_sha512_padding(input: Vec<u8>) -> Vec<u8> {
@@ -53,30 +66,20 @@ fn add_sha512_padding(input: Vec<u8>) -> Vec<u8> {
     padded_input
 }
 
-pub fn sha512_state_sequence(
+pub fn sha512_msg_block_sequence(
     input: Vec<u8>,
-) -> (
-    Vec<[u8; BLOCK_LENGTH_BYTES]>,
-    Vec<[u8; DIGEST_LENGTH_BYTES]>,
-) {
+) -> Vec<[bool; BLOCK_LENGTH]>
+{
     let padded_input = add_sha512_padding(input);
-
-    let mut state = IV;
-    let mut digest_sequence: Vec<[u8; DIGEST_LENGTH_BYTES]> = vec![];
-    let mut block_sequence: Vec<[u8; BLOCK_LENGTH_BYTES]> = vec![];
-    let state_bytes = sha512_state_to_bytes(state);
-    assert_eq!(state_bytes.len(), DIGEST_LENGTH_BYTES);
-    digest_sequence.push(state_bytes.as_slice().try_into().unwrap());
-
     let blocks_vec: Vec<GenericArray<u8, U128>> = padded_input_to_blocks(padded_input);
-    for block in blocks_vec {
-        compress512(&mut state, &[block]);
-        let state_bytes = sha512_state_to_bytes(state);
-        assert_eq!(state_bytes.len(), DIGEST_LENGTH_BYTES);
-        digest_sequence.push(state_bytes.as_slice().try_into().unwrap());
-        block_sequence.push(block.try_into().unwrap());
-    }
-    (block_sequence, digest_sequence)
+    let blocks_vec_bytes: Vec<[u8; BLOCK_LENGTH_BYTES]> = blocks_vec
+        .into_iter()
+        .map(|b| b.try_into().unwrap())
+        .collect();
+    blocks_vec_bytes
+        .iter()
+        .map(|b| bytes_to_bits(b).try_into().unwrap())
+        .collect()
 }
 
 pub fn digest_to_scalars<F>(digest: &[u8; DIGEST_LENGTH_BYTES]) -> [F; 3]
@@ -151,6 +154,7 @@ mod test {
     use super::*;
     use hex;
     use pasta_curves::Fp;
+    use sha2::compress512;
 
     #[test]
     fn test_one_compression_iteration() {
@@ -181,24 +185,6 @@ mod test {
         let hash_bytes: Vec<u8> = sha512_state_to_bytes(state);
         let expected_hash = "7361ec4a617b6473fb751c44d1026db9442915a5fcea1a419e615d2f3bc5069494da28b8cf2e4412a1dc97d6848f9c84a254fb884ad0720a83eaa0434aeafd8c";
         assert_eq!(expected_hash, hex::encode(hash_bytes));
-    }
-
-    #[test]
-    fn test_digest_sequence_generation() {
-        let input: Vec<u8> = b"abcdefghbcdefghicdefghijdefghijkefghijklfghijklmghijklmnhijklmnoijklmnopjklmnopqklmnopqrlmnopqrsmnopqrstnopqrstu".to_vec();
-        let (_, digest_sequence) = sha512_state_sequence(input);
-        assert_eq!(digest_sequence.len(), 3usize);
-
-        // https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHA512.pdf
-        let expected_digest_sequence = [
-            "6a09e667f3bcc908bb67ae8584caa73b3c6ef372fe94f82ba54ff53a5f1d36f1510e527fade682d19b05688c2b3e6c1f1f83d9abfb41bd6b5be0cd19137e2179",
-            "4319017a2b706e69cd4b05938bae5e890186bf199f30aa956ef8b71d2f810585d787d6764b20bda2a26014470973692000ec057f37d14b8e06add5b50e671c72",
-            "8e959b75dae313da8cf4f72814fc143f8f7779c6eb9f7fa17299aeadb6889018501d289e4900f7e4331b99dec4b5433ac7d329eeb6dd26545e96e55b874be909",
-        ];
-
-        for (i, hash_bytes) in digest_sequence.into_iter().enumerate() {
-            assert_eq!(expected_digest_sequence[i], hex::encode(hash_bytes));
-        }
     }
 
     #[test]
