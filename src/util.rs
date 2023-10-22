@@ -1,6 +1,6 @@
 use bellpepper::gadgets::multipack::{bytes_to_bits, compute_multipacking};
-use generic_array::{typenum::U128, GenericArray};
 use ff::{PrimeField, PrimeFieldBits};
+use generic_array::{typenum::U128, GenericArray};
 
 pub const IV: [u64; 8] = [
     0x6a09e667f3bcc908,
@@ -19,12 +19,8 @@ pub const DIGEST_LENGTH_BYTES: usize = 64;
 pub const DIGEST_LENGTH: usize = 512;
 
 pub fn sha512_state_to_bytes(state: [u64; 8]) -> Vec<u8> {
-    state
-        .into_iter()
-        .flat_map(|x| x.to_be_bytes())
-        .collect()
+    state.into_iter().flat_map(|x| x.to_be_bytes()).collect()
 }
-
 
 fn padded_input_to_blocks(input: Vec<u8>) -> Vec<GenericArray<u8, U128>> {
     assert!(input.len() % BLOCK_LENGTH_BYTES == 0);
@@ -65,10 +61,7 @@ fn add_sha512_padding(input: Vec<u8>) -> Vec<u8> {
     padded_input
 }
 
-pub fn sha512_msg_block_sequence(
-    input: Vec<u8>,
-) -> Vec<[bool; BLOCK_LENGTH]>
-{
+pub fn sha512_msg_block_sequence(input: Vec<u8>) -> Vec<[bool; BLOCK_LENGTH]> {
     let padded_input = add_sha512_padding(input);
     let blocks_vec: Vec<GenericArray<u8, U128>> = padded_input_to_blocks(padded_input);
     let blocks_vec_bytes: Vec<[u8; BLOCK_LENGTH_BYTES]> = blocks_vec

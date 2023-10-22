@@ -1,24 +1,22 @@
 use std::marker::PhantomData;
 
-use super::util::{
-    sha512_msg_block_sequence, BLOCK_LENGTH, DIGEST_LENGTH,
-};
+use super::util::{sha512_msg_block_sequence, BLOCK_LENGTH, DIGEST_LENGTH};
+use bellpepper::gadgets::multipack::pack_bits;
 use bellpepper_core::{
-    num::AllocatedNum,
     boolean::{AllocatedBit, Boolean},
+    num::AllocatedNum,
     ConstraintSystem, SynthesisError,
 };
-use bellpepper::gadgets::multipack::pack_bits;
 
 use bellpepper_sha512::sha512::sha512_compression_function;
 use bellpepper_sha512::uint64::UInt64;
-use nova_snark::traits::circuit::StepCircuit;
 use ff::{PrimeField, PrimeFieldBits};
+use nova_snark::traits::circuit::StepCircuit;
 
 #[derive(Clone, Debug)]
 pub struct SHA512CompressionCircuit<F: PrimeField> {
     input: [bool; BLOCK_LENGTH],
-    phantom: PhantomData<F>
+    phantom: PhantomData<F>,
 }
 
 impl<F> Default for SHA512CompressionCircuit<F>
@@ -28,24 +26,23 @@ where
     fn default() -> Self {
         Self {
             input: [false; BLOCK_LENGTH],
-            phantom: Default::default()
+            phantom: Default::default(),
         }
     }
 }
 
 impl<F: PrimeField + PrimeFieldBits> SHA512CompressionCircuit<F> {
-    
     // Produces the intermediate SHA512 digests when a message is hashed
     pub fn new_state_sequence(input: Vec<u8>) -> Vec<Self> {
         let block_seq = sha512_msg_block_sequence(input);
 
         block_seq
-        .into_iter()
-        .map(|b| SHA512CompressionCircuit {
-            input: b,
-            phantom: PhantomData,
-        })
-        .collect()
+            .into_iter()
+            .map(|b| SHA512CompressionCircuit {
+                input: b,
+                phantom: PhantomData,
+            })
+            .collect()
     }
 
     pub fn compress<CS: ConstraintSystem<F>>(
