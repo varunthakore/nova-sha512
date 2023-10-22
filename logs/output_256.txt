@@ -1,28 +1,28 @@
 Nova-based SHA512 compression function iterations
 =========================================================
 Producing public parameters...
-PublicParams::setup, took 5.62858415s 
+PublicParams::setup, took 5.858633417s 
 Number of constraints per step (primary circuit): 78415
 Number of constraints per step (secondary circuit): 10347
 Number of variables per step (primary circuit): 78331
 Number of variables per step (secondary circuit): 10329
 Generating a RecursiveSNARK...
-RecursiveSNARK::prove_step 0: true, took 81.070417ms 
-RecursiveSNARK::prove_step 1: true, took 136.461177ms 
-RecursiveSNARK::prove_step 2: true, took 166.520539ms 
-Total time taken by RecursiveSNARK::prove_steps: 384.12075ms
+RecursiveSNARK::prove_step 0: true, took 750ns 
+RecursiveSNARK::prove_step 1: true, took 150.965875ms 
+RecursiveSNARK::prove_step 2: true, took 191.503625ms 
+Total time taken by RecursiveSNARK::prove_steps: 342.564417ms
 Verifying a RecursiveSNARK...
-RecursiveSNARK::verify: true, took 152.305458ms
+RecursiveSNARK::verify: true, took 184.247334ms
 Generating a CompressedSNARK using Spartan with IPA-PC...
-CompressedSNARK::prove: true, took 6.520187811s
-Total proving time is 8.675470891s
-CompressedSNARK::len 10403 bytes
+CompressedSNARK::prove: true, took 9.271662333s
+Total proving time is 10.498092333s
+CompressedSNARK::len 10296 bytes
 Verifying a CompressedSNARK...
-CompressedSNARK::verify: true, took 226.233019ms
+CompressedSNARK::verify: true, took 256.616ms
 =========================================================
-Public parameters generation time: 5.62858415s 
-Total proving time (excl pp generation): 8.675470891s
-Total verification time: 226.233019ms
+Public parameters generation time: 5.858633417s 
+Total proving time (excl pp generation): 10.498092333s
+Total verification time: 256.616ms
 =========================================================
 Expected value of final hash = "693f95d58383a6162d2aab49eb60395dcc4bb22295120caf3f21e3039003230b287c566a03c7a0ca5accaed2133c700b1cb3f82edf8adcbddc92b4f9fb9910c6"
 Actual value of final hash   = "693f95d58383a6162d2aab49eb60395dcc4bb22295120caf3f21e3039003230b287c566a03c7a0ca5accaed2133c700b1cb3f82edf8adcbddc92b4f9fb9910c6"

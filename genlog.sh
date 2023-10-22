@@ -7,5 +7,5 @@ fi
 LEN=$(echo "2 ^ $1" | bc)
 echo $LEN
 echo "Generating output logs for input length ${LEN} bytes."
-command time -v --output=./logs/time_output_${LEN}.txt ./target/release/examples/sha512 $1 > ./logs/output_${LEN}.txt
+command time -l -h -o ./logs/time_output_${LEN}.txt ./target/release/examples/sha512 $1 > ./logs/output_${LEN}.txt
 echo "See logs directory for output files"

@@ -1,23 +1,18 @@
-	Command being timed: "./target/release/examples/sha512 16"
-	User time (seconds): 490.15
-	System time (seconds): 2.92
-	Percent of CPU this job got: 440%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 1:51.97
-	Average shared text size (kbytes): 0
-	Average unshared data size (kbytes): 0
-	Average stack size (kbytes): 0
-	Average total size (kbytes): 0
-	Maximum resident set size (kbytes): 415852
-	Average resident set size (kbytes): 0
-	Major (requiring I/O) page faults: 1
-	Minor (reclaiming a frame) page faults: 149420
-	Voluntary context switches: 152124
-	Involuntary context switches: 224599
-	Swaps: 0
-	File system inputs: 0
-	File system outputs: 88
-	Socket messages sent: 0
-	Socket messages received: 0
-	Signals delivered: 0
-	Page size (bytes): 4096
-	Exit status: 0
+	1m50.38s real		8m9.74s user		11.12s sys
+           401932288  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+               79105  page reclaims
+                 159  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+                  25  voluntary context switches
+              753223  involuntary context switches
+       2740940995236  instructions retired
+        978804574476  cycles elapsed
+           305350656  peak memory footprint

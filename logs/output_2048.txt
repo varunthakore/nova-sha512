@@ -1,42 +1,42 @@
 Nova-based SHA512 compression function iterations
 =========================================================
 Producing public parameters...
-PublicParams::setup, took 5.65060872s 
+PublicParams::setup, took 5.298190833s 
 Number of constraints per step (primary circuit): 78415
 Number of constraints per step (secondary circuit): 10347
 Number of variables per step (primary circuit): 78331
 Number of variables per step (secondary circuit): 10329
 Generating a RecursiveSNARK...
-RecursiveSNARK::prove_step 0: true, took 84.01031ms 
-RecursiveSNARK::prove_step 1: true, took 137.031124ms 
-RecursiveSNARK::prove_step 2: true, took 160.755787ms 
-RecursiveSNARK::prove_step 3: true, took 164.975492ms 
-RecursiveSNARK::prove_step 4: true, took 171.796554ms 
-RecursiveSNARK::prove_step 5: true, took 174.896925ms 
-RecursiveSNARK::prove_step 6: true, took 180.363054ms 
-RecursiveSNARK::prove_step 7: true, took 173.828721ms 
-RecursiveSNARK::prove_step 8: true, took 187.749193ms 
-RecursiveSNARK::prove_step 9: true, took 182.455552ms 
-RecursiveSNARK::prove_step 10: true, took 210.35821ms 
-RecursiveSNARK::prove_step 11: true, took 192.386381ms 
-RecursiveSNARK::prove_step 12: true, took 185.54792ms 
-RecursiveSNARK::prove_step 13: true, took 185.632292ms 
-RecursiveSNARK::prove_step 14: true, took 189.76049ms 
-RecursiveSNARK::prove_step 15: true, took 185.750486ms 
-RecursiveSNARK::prove_step 16: true, took 190.13243ms 
-Total time taken by RecursiveSNARK::prove_steps: 2.95789328s
+RecursiveSNARK::prove_step 0: true, took 791ns 
+RecursiveSNARK::prove_step 1: true, took 132.414208ms 
+RecursiveSNARK::prove_step 2: true, took 158.618542ms 
+RecursiveSNARK::prove_step 3: true, took 167.607958ms 
+RecursiveSNARK::prove_step 4: true, took 166.046417ms 
+RecursiveSNARK::prove_step 5: true, took 167.494333ms 
+RecursiveSNARK::prove_step 6: true, took 172.640208ms 
+RecursiveSNARK::prove_step 7: true, took 174.485625ms 
+RecursiveSNARK::prove_step 8: true, took 176.520625ms 
+RecursiveSNARK::prove_step 9: true, took 177.566292ms 
+RecursiveSNARK::prove_step 10: true, took 180.471ms 
+RecursiveSNARK::prove_step 11: true, took 176.919666ms 
+RecursiveSNARK::prove_step 12: true, took 179.644625ms 
+RecursiveSNARK::prove_step 13: true, took 181.066542ms 
+RecursiveSNARK::prove_step 14: true, took 180.574666ms 
+RecursiveSNARK::prove_step 15: true, took 180.161417ms 
+RecursiveSNARK::prove_step 16: true, took 187.606333ms 
+Total time taken by RecursiveSNARK::prove_steps: 2.760436417s
 Verifying a RecursiveSNARK...
-RecursiveSNARK::verify: true, took 177.536358ms
+RecursiveSNARK::verify: true, took 157.249833ms
 Generating a CompressedSNARK using Spartan with IPA-PC...
-CompressedSNARK::prove: true, took 6.567937543s
-Total proving time is 11.310179391s
-CompressedSNARK::len 10399 bytes
+CompressedSNARK::prove: true, took 7.670569334s
+Total proving time is 11.19301675s
+CompressedSNARK::len 10302 bytes
 Verifying a CompressedSNARK...
-CompressedSNARK::verify: true, took 240.015387ms
+CompressedSNARK::verify: true, took 246.204209ms
 =========================================================
-Public parameters generation time: 5.65060872s 
-Total proving time (excl pp generation): 11.310179391s
-Total verification time: 240.015387ms
+Public parameters generation time: 5.298190833s 
+Total proving time (excl pp generation): 11.19301675s
+Total verification time: 246.204209ms
 =========================================================
 Expected value of final hash = "8785f615b30c07eb4c5f5d72c9b3663521081581ec670631b28be491f5f7ad6c6757b9a2025c68471fa3c9db65305804f6ec6dfd15159b02e91c58ad570e92fb"
 Actual value of final hash   = "8785f615b30c07eb4c5f5d72c9b3663521081581ec670631b28be491f5f7ad6c6757b9a2025c68471fa3c9db65305804f6ec6dfd15159b02e91c58ad570e92fb"
