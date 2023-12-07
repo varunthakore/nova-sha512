@@ -73,9 +73,9 @@ fn main() {
         &pp,
         &primary_circuit_sequence[0],
         &circuit_secondary,
-        z0_primary.clone(),
-        z0_secondary.clone(),
-    );
+        &z0_primary.clone(),
+        &z0_secondary.clone(),
+    ).unwrap();
     let start = Instant::now();
     for (i, circuit_primary) in primary_circuit_sequence.iter().enumerate() {
         let step_start = Instant::now();
@@ -83,8 +83,6 @@ fn main() {
             &pp,
             circuit_primary,
             &circuit_secondary,
-            z0_primary.clone(),
-            z0_secondary.clone(),
         );
         assert!(res.is_ok());
         println!(
@@ -144,7 +142,7 @@ fn main() {
     // verify the compressed SNARK
     println!("Verifying a CompressedSNARK...");
     let start = Instant::now();
-    let res = compressed_snark.verify(&vk, num_steps, z0_primary, z0_secondary);
+    let res = compressed_snark.verify(&vk, num_steps, &z0_primary, &z0_secondary);
     let verification_time = start.elapsed();
     println!(
         "CompressedSNARK::verify: {:?}, took {:?}",
