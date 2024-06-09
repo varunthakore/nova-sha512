@@ -1,16 +1,24 @@
-type G1 = pasta_curves::pallas::Point;
-type G2 = pasta_curves::vesta::Point;
 use std::time::Instant;
 
 use clap::{Arg, Command};
 use flate2::{write::ZlibEncoder, Compression};
 use nova_sha512::circuit::SHA512CompressionCircuit;
 use nova_sha512::util::{scalars_to_digest, sha512_initial_digest_scalars, DIGEST_LENGTH_BYTES};
+use nova_snark::traits::Engine;
 use nova_snark::{
-    traits::{circuit::TrivialCircuit, Group},
+    traits::circuit::TrivialCircuit,
+    traits::snark::RelaxedR1CSSNARKTrait,
     CompressedSNARK, PublicParams, RecursiveSNARK,
+    provider::{PallasEngine, VestaEngine},
 };
 use sha2::{Digest, Sha512};
+
+type E1 = PallasEngine;
+type E2 = VestaEngine;
+type EE1 = nova_snark::provider::ipa_pc::EvaluationEngine<E1>;
+type EE2 = nova_snark::provider::ipa_pc::EvaluationEngine<E2>;
+type S1 = nova_snark::spartan::snark::RelaxedR1CSSNARK<E1, EE1>;
+type S2 = nova_snark::spartan::snark::RelaxedR1CSSNARK<E2, EE2>;
 
 fn main() {
     let cmd = Command::new("Nova-based SHA512 circuit proof generation and verification")
@@ -31,14 +39,14 @@ fn main() {
     println!("Nova-based SHA512 compression function iterations");
     println!("=========================================================");
 
-    type C1 = SHA512CompressionCircuit<<G1 as Group>::Scalar>;
-    type C2 = TrivialCircuit<<G2 as Group>::Scalar>;
+    type C1 = SHA512CompressionCircuit<<E1 as Engine>::Scalar>;
+    type C2 = TrivialCircuit<<E2 as Engine>::Scalar>;
     let circuit_primary: C1 = SHA512CompressionCircuit::default();
     let circuit_secondary: C2 = TrivialCircuit::default();
 
     let param_gen_timer = Instant::now();
     println!("Producing public parameters...");
-    let pp = PublicParams::<G1, G2, C1, C2>::setup(&circuit_primary, &circuit_secondary.clone());
+    let pp = PublicParams::<E1, E2, C1, C2>::setup(&circuit_primary, &circuit_secondary.clone(), &*S1::ck_floor(), &*S2::ck_floor()).unwrap();
 
     let param_gen_time = param_gen_timer.elapsed();
     println!("PublicParams::setup, took {:?} ", param_gen_time);
@@ -63,13 +71,13 @@ fn main() {
     let input: Vec<u8> = vec![0u8; input_len]; // All the input bytes are zero
     let primary_circuit_sequence = C1::new_state_sequence(input.clone());
 
-    let z0_primary = sha512_initial_digest_scalars::<<G1 as Group>::Scalar>();
-    let z0_secondary = vec![<G2 as Group>::Scalar::zero()];
+    let z0_primary = sha512_initial_digest_scalars::<<E1 as Engine>::Scalar>();
+    let z0_secondary = vec![<E2 as Engine>::Scalar::zero()];
 
     let proof_gen_timer = Instant::now();
     // produce a recursive SNARK
     println!("Generating a RecursiveSNARK...");
-    let mut recursive_snark: RecursiveSNARK<G1, G2, C1, C2> = RecursiveSNARK::<G1, G2, C1, C2>::new(
+    let mut recursive_snark: RecursiveSNARK<E1, E2, C1, C2> = RecursiveSNARK::<E1, E2, C1, C2>::new(
         &pp,
         &primary_circuit_sequence[0],
         &circuit_secondary,
@@ -114,10 +122,6 @@ fn main() {
     let (pk, vk) = CompressedSNARK::<_, _, _, _, S1, S2>::setup(&pp).unwrap();
 
     let start = Instant::now();
-    type EE1 = nova_snark::provider::ipa_pc::EvaluationEngine<G1>;
-    type EE2 = nova_snark::provider::ipa_pc::EvaluationEngine<G2>;
-    type S1 = nova_snark::spartan::snark::RelaxedR1CSSNARK<G1, EE1>;
-    type S2 = nova_snark::spartan::snark::RelaxedR1CSSNARK<G2, EE2>;
 
     let res = CompressedSNARK::<_, _, _, _, S1, S2>::prove(&pp, &pk, &recursive_snark);
     println!(

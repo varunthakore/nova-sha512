@@ -9,7 +9,7 @@ use bellpepper_core::{
 };
 
 use bellpepper_sha512::sha512::sha512_compression_function;
-use bellpepper_sha512::uint64::UInt64;
+use bellpepper_uint64::UInt64;
 use ff::{PrimeField, PrimeFieldBits};
 use nova_snark::traits::circuit::StepCircuit;
 
